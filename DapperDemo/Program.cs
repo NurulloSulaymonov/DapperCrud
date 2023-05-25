@@ -6,11 +6,14 @@ var teacher = new TeacherDto()
     LastName = "Abdullah",
     Email = "Abdullah@test",
 };
-Add(teacher);
+
+
+Count();
+// Add(teacher);
 // Show(null);
 void Show(string name)
 {
-    var teachers = teacherService.GetTeachers(name,null);
+    var teachers = teacherService.GetTeachers(name);
     Console.WriteLine("Id-----------FirstName------------LastName-------------Email");
     foreach (var teacher in teachers)
     {
@@ -29,4 +32,9 @@ void Add(TeacherDto teacher)
 {
     var result = teacherService.AddTeacher(teacher);
     Console.WriteLine(result.Id);
+}
+
+void Count()
+{
+    Console.WriteLine(teacherService.CountTeachers());
 }
