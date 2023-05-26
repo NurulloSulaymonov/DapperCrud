@@ -14,13 +14,13 @@ public class QuoteService
         using (var conn = new NpgsqlConnection(connectionString))
         {
             var sql = $"insert into quotes (autor, quotetext, categoryid) values (@Autor, @Quotetext, @Categoryid) returning id";
-            var id =conn.ExecuteScalar<int>(sql, quote);
+            var id = conn.ExecuteScalar<int>(sql, quote);
             quote.Id = id;
             return quote;
         }
     }
 
-    public QuoteDto UpdateQuote (QuoteDto quote)
+    public QuoteDto UpdateQuote(QuoteDto quote)
     {
         using (var conn = new NpgsqlConnection(connectionString))
         {
@@ -35,7 +35,16 @@ public class QuoteService
         using (var conn = new NpgsqlConnection(connectionString))
         {
             var sql = $"Delete from Quotes where id = @id";
-            var result=  conn.Execute(sql);
+            var result = conn.Execute(sql);
+            return result;
+        }
+    }
+    public List<AuthorNumOfQuotesDto> AuthorNumOfQuotes()
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"select author, Count(*) as CountOfQuotes from quotes group by author";
+            var result = conn.Query<AuthorNumOfQuotesDto>(sql).ToList();
             return result;
         }
     }
