@@ -39,4 +39,14 @@ public class QuoteService
             return result;
         }
     }
+
+    public List<GetFilterQuoteDto> ListQuote(string quote_text)
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"select author as Author, quote_text as QuoteText from Quotes where quote_text like '%{quote_text}%'";
+            var result = conn.Query<GetFilterQuoteDto>(sql).ToList();
+            return result;
+        }
+    }
 }
