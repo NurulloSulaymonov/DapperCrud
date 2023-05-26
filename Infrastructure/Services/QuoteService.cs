@@ -7,7 +7,7 @@ namespace Infrastructure.Services;
 public class QuoteService
 {
     private string connectionString =
-        "Server=Localhost; port= 5432; database=quotedb; User Id= postgres; password= 12345";
+        $"Server=Localhost; port= 5432; database=quotedb; User Id= postgres; password= 12345";
 
     public QuoteDto AddQuote(QuoteDto quote)
     {
@@ -19,7 +19,6 @@ public class QuoteService
             return quote;
         }
     }
-
     public QuoteDto UpdateQuote (QuoteDto quote)
     {
         using (var conn = new NpgsqlConnection(connectionString))
@@ -29,13 +28,23 @@ public class QuoteService
             return quote;
         }
     }
-
     public int Delete(int id)
     {
         using (var conn = new NpgsqlConnection(connectionString))
         {
             var sql = $"Delete from Quotes where id = @id";
             var result=  conn.Execute(sql);
+            return result;
+        }
+    }
+    //made by nasim, hope it works
+    public QuoteDto Random()
+    {
+        using (var conn= new NpgsqlConnection(connectionString))
+
+        {
+            var sql = $"SELECT * FROM Quotes ORDER BY RANDOM() LIMIT 1;";
+            var result = conn.QuerySingle<QuoteDto>(sql);
             return result;
         }
     }
