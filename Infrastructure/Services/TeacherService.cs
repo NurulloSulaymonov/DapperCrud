@@ -1,7 +1,6 @@
 using Npgsql;
 using Dapper;
 using Domain.Dtos;
-
 public class TeacherService
 {
     //private List<TeacherDto> _teacher;

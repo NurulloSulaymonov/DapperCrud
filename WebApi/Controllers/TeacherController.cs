@@ -1,3 +1,4 @@
+using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -8,6 +9,8 @@ namespace WebApi.Controllers;
 public class TeacherController : ControllerBase
 {
     private TeacherService _teacherService;
+    private TeacherService _categoryService;
+
     public TeacherController()
     {
         _teacherService = new TeacherService();
@@ -25,7 +28,4 @@ public class TeacherController : ControllerBase
     {
         return _teacherService.AddTeacher(teacher);
     }
-
-
-
 }

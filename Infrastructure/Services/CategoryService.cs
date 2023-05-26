@@ -28,4 +28,15 @@ public class CategoryService
             return _categoryDto;
         }
     }
+
+    public CategoryDto GetQuotesByCategory(CategoryDto id)
+    {
+        
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"SELECT * FROM quotes WHERE categoryid = {id}";
+          var result =  conn.QuerySingle<CategoryDto>(sql);
+            return result ;
+        }
+    }
 }
