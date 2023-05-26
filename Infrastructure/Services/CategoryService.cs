@@ -28,4 +28,14 @@ public class CategoryService
             return _categoryDto;
         }
     }
+    
+    public List<CategoryDto> GetNumberQuoteswithcategory()
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"select ch.categoryname as CategoryName, count(ch.id) as Count from categories as ch join quotes as q ON q.category_id = ch.id GROUP by ch.categoryname;";
+            var results = conn.Query<CategoryDto>(sql);
+            return results.ToList();
+        }
+    }
 }
