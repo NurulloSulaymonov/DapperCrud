@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Domain.Dtos;
 
 namespace WebApi.Controllers;
 
