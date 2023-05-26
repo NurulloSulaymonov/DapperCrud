@@ -39,4 +39,25 @@ public class QuoteService
             return result;
         }
     }
+
+    public int GetNumberOfAuthors()
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"select count(author) from Quotes";
+            var result = conn.ExecuteScalar<int>(sql);
+            return result;
+        }
+    }
+    public int GetNumberOfQuote()
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"select count(QuoteText) from Quotes";
+            var result = conn.ExecuteScalar<int>(sql);
+            return result;
+        }
+    }
+
+    
 }
