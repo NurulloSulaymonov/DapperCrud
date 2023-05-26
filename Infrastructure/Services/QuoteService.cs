@@ -7,7 +7,7 @@ namespace Infrastructure.Services;
 public class QuoteService
 {
     private string connectionString =
-        "Server=Localhost; port= 5432; database=quotedb; User Id= postgres; password= 12345";
+        "Server=Localhost; port= 5432; database=Quotes; User Id= postgres; password= 23022002";
 
     public QuoteDto AddQuote(QuoteDto quote)
     {
