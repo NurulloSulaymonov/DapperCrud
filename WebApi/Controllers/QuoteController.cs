@@ -15,9 +15,9 @@ public class QuoteController : ControllerBase
         _quoteService = new QuoteService();
     }
 
-    [HttpGet("LikeQuote")]
-    public List<GetFilterQuoteDto> LikeQuote(string quote_text)
+    [HttpGet("GetQuote")]
+    public List<GetFilterQuoteDto> GetQuote(string quote_text)
     {
-        return _quoteService.ListQuote(quote_text);
+        return _quoteService.GetQuote(quote_text);
    }
 }

@@ -40,7 +40,7 @@ public class QuoteService
         }
     }
 
-    public List<GetFilterQuoteDto> ListQuote(string quote_text)
+    public List<GetFilterQuoteDto> GetQuote(string quote_text)
     {
         using (var conn = new NpgsqlConnection(connectionString))
         {
