@@ -7,20 +7,20 @@ namespace Infrastructure.Services;
 public class QuoteService
 {
     private string connectionString =
-        "Server=Localhost; port= 5432; database=quotedb; User Id= postgres; password= 12345";
+        "Server=Localhost; port= 5432; database=Quotes; User Id= postgres; password= 23022002";
 
     public QuoteDto AddQuote(QuoteDto quote)
     {
         using (var conn = new NpgsqlConnection(connectionString))
         {
             var sql = $"insert into quotes (autor, quotetext, categoryid) values (@Autor, @Quotetext, @Categoryid) returning id";
-            var id =conn.ExecuteScalar<int>(sql, quote);
+            var id = conn.ExecuteScalar<int>(sql, quote);
             quote.Id = id;
             return quote;
         }
     }
 
-    public QuoteDto UpdateQuote (QuoteDto quote)
+    public QuoteDto UpdateQuote(QuoteDto quote)
     {
         using (var conn = new NpgsqlConnection(connectionString))
         {
@@ -35,11 +35,20 @@ public class QuoteService
         using (var conn = new NpgsqlConnection(connectionString))
         {
             var sql = $"Delete from Quotes where id = @id";
-            var result=  conn.Execute(sql);
+            var result = conn.Execute(sql);
             return result;
         }
     }
 
+    public List<GetFilterQuoteDto> GetQuote(string quote_text)
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"select author as Author, quote_text as QuoteText from Quotes where quote_text like '%{quote_text}%'";
+            var result = conn.Query<GetFilterQuoteDto>(sql).ToList();
+            return result;
+        }
+    }
     public int GetNumberOfAuthors()
     {
         using (var conn = new NpgsqlConnection(connectionString))
@@ -59,5 +68,5 @@ public class QuoteService
         }
     }
 
-    
+
 }
