@@ -1,16 +1,20 @@
 using Domain.Dtos;
 using Npgsql;
 using Dapper;
+using Infrastructure.Context;
 
 namespace Infrastructure.Services;
 
 public class CategoryService
 {
-    private string connectionString ="server= localhost;port=5432; database=quotedb; User Id= postgres; password= 12345";
-
+    DapperContext _dapperContext;
+    public CategoryService()
+    {
+        _dapperContext= new DapperContext();
+    }
     public CategoryDto AddCategory(CategoryDto category)
     {
-        using (var conn = new NpgsqlConnection(connectionString))
+        using (var conn = _dapperContext.CreateConnection())
         {
             var sql = $"insert into Categories (categoryname) values (@CategoryName) returning id ";
             var id =conn.ExecuteScalar<int>(sql, category);
@@ -21,7 +25,7 @@ public class CategoryService
 
     public CategoryDto UpdateCategory(CategoryDto _categoryDto)
     {
-        using (var conn = new NpgsqlConnection(connectionString))
+        using (var conn =  _dapperContext.CreateConnection())
         {
             var sql = $"update categories set categoryname = @CategoryName where id = @Id";
             conn.Execute(sql, _categoryDto);
@@ -31,7 +35,7 @@ public class CategoryService
     
     public List<CategoryDto> GetNumberQuoteswithcategory()
     {
-        using (var conn = new NpgsqlConnection(connectionString))
+        using (var conn =  _dapperContext.CreateConnection())
         {
             var sql = $"select ch.categoryname as CategoryName, count(ch.id) as Count from categories as ch join quotes as q ON q.category_id = ch.id GROUP by ch.categoryname;";
             var results = conn.Query<CategoryDto>(sql);
