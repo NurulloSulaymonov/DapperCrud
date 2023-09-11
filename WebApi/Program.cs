@@ -1,8 +1,19 @@
+using Domain.Dtos;
+using Infrastructure.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
 builder.Services.AddControllers();
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddSingleton<QuoteService>();
+builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddSingleton<InfoDto>();
+builder.Services.AddSingleton<SingletonService>();
+builder.Services.AddTransient<TransientService>();
+builder.Services.AddScoped<ScopedService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

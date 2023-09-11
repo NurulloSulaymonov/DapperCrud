@@ -73,5 +73,15 @@ public class TeacherService
         }
     }
 
+    //insert 
+    public TeacherDto UpdateTeacher(TeacherDto teacher)
+    {
+        using (var conn = new NpgsqlConnection(connectionString))
+        {
+            var sql = $"update teachers set first_name=@firstname, last_name=@lastname, email_address=@emailaddress where teacher_id=@id";
+            conn.Execute(sql, teacher);
+            return teacher;
+        }
+    }
 
 }
