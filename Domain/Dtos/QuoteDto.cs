@@ -7,3 +7,4 @@ public class QuoteDto
     public string QuoteText { get; set; }
     public int CategoryId { get; set; }
 }
+

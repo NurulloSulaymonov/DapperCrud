@@ -4,25 +4,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
-[ApiController]
 [Route("[controller]")]
 public class QuoteController : ControllerBase
 {
     private QuoteService _quoteService;
-    public QuoteController()
+    public QuoteController(QuoteService quoteService)
     {
-        _quoteService = new QuoteService();
+        _quoteService = quoteService;
     }
 
     [HttpGet("GetQuote")]
     public List<GetFilterQuoteDto> GetQuote(string? quote_text)
     {
+        IFormFile file;
         return _quoteService.GetQuote(quote_text);
     }  
     
     [HttpPost("Add")]
-    public QuoteDto AddQuote(QuoteDto quote)
+    public async Task<QuoteDto> AddQuote([FromQuery]AddQuoteDto quote)
     {
-        return _quoteService.AddQuote(quote);
+        if (ModelState.IsValid)
+        {
+            return await _quoteService.AddQuote(quote);
+        }
+        else return new QuoteDto();
+
     } 
 }

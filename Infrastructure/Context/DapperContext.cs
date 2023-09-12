@@ -4,9 +4,14 @@ using Npgsql;
 
 public class DapperContext
 {
+    private readonly IConfiguration _configuration;
 
+    public DapperContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
     public IDbConnection CreateConnection()
     {
-        return new NpgsqlConnection("Server=Localhost; port= 5432; database=quotedb; User Id= postgres; password= 12345");
+        return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
     }
 }

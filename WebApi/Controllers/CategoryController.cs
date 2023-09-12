@@ -7,14 +7,6 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class CategoryController :ControllerBase
 {
-    private ICategoryService _categoryService;
-    public CategoryController(InfoDto info)
-    {
-       
-    }
-    
-    
     
 
-   
 }

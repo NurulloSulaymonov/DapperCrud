@@ -7,18 +7,37 @@ namespace Infrastructure.Services;
 public class QuoteService
 {
     private DapperContext _context;
-    public QuoteService()
+    private readonly IfileService _fileService;
+
+    public QuoteService(DapperContext context, IfileService fileService)
     {
-        _context = new DapperContext();
+        _context = context;
+        _fileService = fileService;
     }
-    public QuoteDto AddQuote(QuoteDto quote)
+    public async Task<QuoteDto> AddQuote(AddQuoteDto quote)
     {
         using (var conn = _context.CreateConnection())
         {
             var sql = $"insert into quotes (author, quotetext, categoryid) values (@Autor, @Quotetext, @Categoryid) returning id";
             var id = conn.ExecuteScalar<int>(sql, quote);
             quote.Id = id;
-            return quote;
+
+            // add images
+            foreach (var file in quote.Files)
+            {
+                var filename = await _fileService.AddFile(file, "images");
+                if (filename == null)
+                    continue;
+                sql = "insert into quote_images (quote_id,image_name) values (@QuoteId,@ImageName)";
+                var response = await conn.ExecuteAsync(sql, new { QuoteId = id, ImageName = filename });
+                
+            }
+            return new QuoteDto()
+            {
+                Id = id,
+                Autor = quote.Autor,
+                CategoryId = quote.CategoryId
+            };
         }
     }
 
@@ -42,12 +61,13 @@ public class QuoteService
         }
     }
 
-    public List<GetFilterQuoteDto> GetQuote(string quote_text)
+    public List<GetFilterQuoteDto> GetQuote(string? text)
     {
         using (var conn = _context.CreateConnection())
         {
-            var sql = $"select author as Author, quotetext as QuoteText from Quotes where quotetext like '%{quote_text}%'";
-            var result = conn.Query<GetFilterQuoteDto>(sql).ToList();
+            var sql = $"select author as Author, quotetext as QuoteText from Quotes ";
+            if (text != null) sql += "where quotetext like '%@QuoteText%'";
+            var result = conn.Query<GetFilterQuoteDto>(sql, new {QuoteText = text} ).ToList();
             return result;
         }
     }

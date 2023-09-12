@@ -6,6 +6,4 @@ public interface ICategoryService
 {
     CategoryDto AddCategory(CategoryDto category);
     CategoryDto UpdateCategory(CategoryDto _categoryDto);
-    string GetScopedId();
-    string GetTransientId();
 }
